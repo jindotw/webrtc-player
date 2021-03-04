@@ -12,7 +12,11 @@ function startStreaming(stream) {
     console.log('Got stream with constraints:', constraints);
     console.log(`Using video device: ${videoTracks[0].label}`);
     window.stream = stream; // make variable available to browser console
-    video.srcObject = stream;
+    if ("srcObject" in video) {
+        video.srcObject = stream;
+    } else { // for older browser compatibility
+        video.src = window.URL.createObjectURL(stream);
+    }
 }
 
 function processError(e) {
